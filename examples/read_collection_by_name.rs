@@ -1,8 +1,8 @@
 use secrecy::SecretString;
-use zotero_rs::requests::list_collections_request::ListCollectionsRequest;
-use zotero_rs::requests::list_items_request::ListItemsRequest;
-use zotero_rs::types::item_metadata::ItemMetadata;
-use zotero_rs::{Auth, ClientOptions, LibraryScope, ZoteroClient};
+use zotero_api_rs::requests::list_collections_request::ListCollectionsRequest;
+use zotero_api_rs::requests::list_items_request::ListItemsRequest;
+use zotero_api_rs::types::item_metadata::ItemMetadata;
+use zotero_api_rs::{Auth, ClientOptions, LibraryScope, ZoteroClient};
 
 fn item_field<'a>(item: &'a serde_json::Value, field: &str) -> Option<&'a str> {
     item.get(field).and_then(serde_json::Value::as_str)

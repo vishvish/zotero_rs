@@ -1,6 +1,6 @@
 use secrecy::SecretString;
-use zotero_rs::requests::list_items_request::ListItemsRequest;
-use zotero_rs::{Auth, ClientOptions, LibraryScope, ZoteroClient};
+use zotero_api_rs::requests::list_items_request::ListItemsRequest;
+use zotero_api_rs::{Auth, ClientOptions, LibraryScope, ZoteroClient};
 
 #[tokio::test]
 #[ignore = "requires real Zotero credentials and network"]

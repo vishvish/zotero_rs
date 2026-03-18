@@ -1,5 +1,5 @@
 [package]
-name = "zotero-rs"
+name = "zotero-api-rs"
 version = "1.0.0"
 edition = "2021"
 rust-version = "1.82"
@@ -10,7 +10,7 @@ keywords = ["zotero", "api", "client", "bibliography"]
 categories = ["api-bindings", "web-programming::http-client"]
 repository = "https://github.com/vish/zotero_rs"
 homepage = "https://github.com/vish/zotero_rs"
-documentation = "https://docs.rs/zotero-rs"
+documentation = "https://docs.rs/zotero-api-rs"
 
 [features]
 default = ["rustls-tls"]

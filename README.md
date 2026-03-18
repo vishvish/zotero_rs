@@ -21,8 +21,8 @@ Usable, decomposed client with endpoint calls split into operation files.
 ## Quick start
 
 ```rust
-use zotero_rs::{ClientOptions, LibraryScope, WriteOptions, ZoteroClient};
-use zotero_rs::requests::list_items_request::ListItemsRequest;
+use zotero_api_rs::{ClientOptions, LibraryScope, WriteOptions, ZoteroClient};
+use zotero_api_rs::requests::list_items_request::ListItemsRequest;
 
 let client = ZoteroClient::new(ClientOptions::default())?;
 let scope = LibraryScope::User(12345);
