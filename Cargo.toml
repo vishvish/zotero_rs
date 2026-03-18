@@ -1,0 +1,42 @@
+[package]
+name = "zotero-rs"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+description = "A secure, typed Rust client for the Zotero Web API v3"
+license = "MIT"
+readme = "README.md"
+keywords = ["zotero", "api", "client", "bibliography"]
+categories = ["api-bindings", "web-programming::http-client"]
+repository = "https://github.com/vish/zotero_rs"
+homepage = "https://github.com/vish/zotero_rs"
+documentation = "https://docs.rs/zotero-rs"
+
+[features]
+default = ["rustls-tls"]
+rustls-tls = ["reqwest/rustls"]
+native-tls = ["reqwest/native-tls"]
+oauth = []
+file-upload = []
+
+[dependencies]
+http = "1.4.0"
+hmac = "0.12.1"
+base64 = "0.22.1"
+percent-encoding = "2.3.2"
+rand = "0.10.0"
+reqwest = { version = "0.13.2", default-features = false, features = ["json", "http2", "query", "form"] }
+secrecy = "0.10.3"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+sha1 = "0.10.6"
+thiserror = "2.0.18"
+url = "2.5.8"
+
+[dev-dependencies]
+tokio = { version = "1.50.0", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6.5"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
