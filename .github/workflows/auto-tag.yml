@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
   checks: read
-  actions: read
+  actions: write
 
 jobs:
   tag-and-release:
@@ -119,3 +119,11 @@ jobs:
           gh release create "$TAG_NAME" \
             --title "$TAG_NAME" \
             --notes "Automated release for $TAG_NAME"
+
+      - name: Dispatch publish workflow for new tag
+        if: steps.tag.outputs.tag_created == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.tag.outputs.tag_name }}
+        run: |
+          gh workflow run publish.yml --ref "$TAG_NAME"
