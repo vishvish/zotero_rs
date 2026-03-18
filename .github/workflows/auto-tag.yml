@@ -1,6 +1,7 @@
 name: Auto Tag Version
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
     paths:
@@ -9,6 +10,7 @@ on:
 permissions:
   contents: write
   checks: read
+  actions: read
 
 jobs:
   tag-and-release:
@@ -35,45 +37,40 @@ jobs:
           REPO: ${{ github.repository }}
           SHA: ${{ github.sha }}
         run: |
-          required_checks=("CI" "Security")
+          required_workflows=("ci.yml" "security.yml")
           deadline=$((SECONDS + 3600))
 
           while true; do
-            json=$(gh api -H "Accept: application/vnd.github+json" "/repos/$REPO/commits/$SHA/check-runs?per_page=100")
             all_ready=true
 
-            for check_name in "${required_checks[@]}"; do
-              status=$(echo "$json" | jq -r --arg name "$check_name" '
-                [.check_runs[] | select(.name == $name)]
-                | sort_by(.started_at // .created_at)
-                | last
-                | .status // "missing"
-              ')
-              conclusion=$(echo "$json" | jq -r --arg name "$check_name" '
-                [.check_runs[] | select(.name == $name)]
-                | sort_by(.started_at // .created_at)
-                | last
-                | .conclusion // "missing"
-              ')
+            for workflow_file in "${required_workflows[@]}"; do
+              run_json=$(gh run list \
+                --repo "$REPO" \
+                --workflow "$workflow_file" \
+                --commit "$SHA" \
+                --json status,conclusion \
+                --limit 1)
+              status=$(echo "$run_json" | jq -r '.[0].status // "missing"')
+              conclusion=$(echo "$run_json" | jq -r '.[0].conclusion // "missing"')
 
               if [ "$status" = "missing" ]; then
-                echo "Check '$check_name' not created yet."
+                echo "Workflow '$workflow_file' not created yet."
                 all_ready=false
                 continue
               fi
 
               if [ "$status" != "completed" ]; then
-                echo "Check '$check_name' status: $status"
+                echo "Workflow '$workflow_file' status: $status"
                 all_ready=false
                 continue
               fi
 
               if [ "$conclusion" != "success" ]; then
-                echo "Check '$check_name' concluded with '$conclusion'. Refusing to tag/release."
+                echo "Workflow '$workflow_file' concluded with '$conclusion'. Refusing to tag/release."
                 exit 1
               fi
 
-              echo "Check '$check_name' passed."
+              echo "Workflow '$workflow_file' passed."
             done
 
             if [ "$all_ready" = true ]; then
