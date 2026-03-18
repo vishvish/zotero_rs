@@ -1,0 +1,6 @@
+# Copy to .envrc.local and add your real token locally.
+export ZOTERO_API_KEY="replace-with-your-real-token"
+export ZOTERO_USER_ID="1234567"
+export ZOTERO_COLLECTION_NAME="example-collection-name"
+export ZOTERO_TOP_LEVEL_ONLY="1"
+export ZOTERO_INCLUDE_TRASHED="0"
